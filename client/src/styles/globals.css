@@ -1,0 +1,198 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;600;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --color-canvas-black: var(--canvas-black);
+  --color-surface-slate: var(--surface-slate);
+  --color-surface-elevated: var(--surface-elevated);
+  --color-surface-border: var(--surface-border);
+
+  --color-brand-mint: var(--brand-mint);
+  --color-brand-console: var(--brand-console);
+  --color-brand-violet: var(--brand-violet);
+  --color-brand-blue: var(--brand-blue);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+  --color-text-inverted: var(--text-inverted);
+
+  --color-semantic-success: var(--semantic-success);
+  --color-semantic-warning: var(--semantic-warning);
+  --color-semantic-danger: var(--semantic-danger);
+  --color-semantic-info: var(--semantic-info);
+
+  --color-score-excellent: var(--score-excellent);
+  --color-score-good: var(--score-good);
+  --color-score-medium: var(--score-medium);
+  --color-score-poor: var(--score-poor);
+}
+
+:root {
+  --canvas-black: #131313;
+  --surface-slate: #1a1a1a;
+  --surface-elevated: #222222;
+  --surface-border: #2d2d2d;
+
+  --brand-mint: #3cffd0;
+  --brand-console: #309875;
+  --brand-violet: #5200ff;
+  --brand-blue: #3860be;
+
+  --text-primary: #ffffff;
+  --text-secondary: #949494;
+  --text-muted: #e9e9e9;
+  --text-inverted: #131313;
+
+  --semantic-success: #3cffd0;
+  --semantic-warning: #f59e0b;
+  --semantic-danger: #ef4444;
+  --semantic-info: #3860be;
+
+  --score-excellent: #3cffd0;
+  --score-good: #86efac;
+  --score-medium: #f59e0b;
+  --score-poor: #ef4444;
+}
+
+[data-theme='light'] {
+  --canvas-black: #f3f4f6; /* gray-100 */
+  --surface-slate: #ffffff;
+  --surface-elevated: #f9fafb; /* gray-50 */
+  --surface-border: #e5e7eb; /* gray-200 */
+
+  --brand-mint: #059669; /* adjusted for contrast on light */
+  --brand-console: #047857;
+  --brand-violet: #6d28d9;
+  --brand-blue: #2563eb;
+
+  --text-primary: #111827; /* gray-900 */
+  --text-secondary: #4b5563; /* gray-600 */
+  --text-muted: #6b7280; /* gray-500 */
+  --text-inverted: #ffffff;
+
+  --semantic-success: #059669;
+  --semantic-warning: #d97706;
+  --semantic-danger: #dc2626;
+  --semantic-info: #2563eb;
+
+  --score-excellent: #059669;
+  --score-good: #10b981;
+  --score-medium: #d97706;
+  --score-poor: #dc2626;
+}
+
+body {
+  background: var(--canvas-black);
+  color: var(--text-primary);
+  font-family: 'Space Grotesk', sans-serif;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Add generic transition for all themed elements to be smooth */
+*, *::before, *::after {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 300ms;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface-border);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--brand-mint);
+  border-radius: 3px;
+}
+
+/* Typography classes mapping to design system */
+@layer utilities {
+  .text-display {
+    font: 700 3.5rem/0.90 'Space Grotesk';
+    letter-spacing: -0.02em;
+  }
+  .text-heading-lg {
+    font: 700 1.5rem/1.10 'Space Grotesk';
+  }
+  .text-heading-md {
+    font: 500 1.125rem/1.20 'Space Grotesk';
+  }
+  .text-body {
+    font: 400 0.9375rem/1.60 'Space Grotesk';
+  }
+  .text-mono {
+    font: 600 0.6875rem/1 'Space Mono';
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+  .text-mono-lg {
+    font: 600 0.75rem/1 'Space Mono';
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+}
+
+/* Leaflet overrides */
+.leaflet-container {
+  background-color: var(--canvas-black) !important;
+  font-family: 'Space Grotesk', sans-serif !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--surface-slate) !important;
+  color: var(--text-primary) !important;
+  border-color: var(--surface-border) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  color: var(--brand-mint) !important;
+}
+
+/* Custom Popup styles */
+.custom-leaflet-popup .leaflet-popup-content-wrapper {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+.custom-leaflet-popup .leaflet-popup-tip-container {
+  display: none;
+}
+.custom-leaflet-popup .leaflet-popup-content {
+  margin: 0;
+  width: auto !important;
+}
+
+/* Land Cover interactive tooltip */
+.land-cover-tooltip {
+  background: rgba(17, 24, 39, 0.95) !important;
+  border: 1px solid rgba(55, 65, 81, 0.8) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5) !important;
+  padding: 0 !important;
+  backdrop-filter: blur(8px);
+}
+.land-cover-tooltip::before {
+  display: none !important;
+}
+
+/* ECharts canvas: prevent text bleeding on overflow */
+.echarts-for-react {
+  overflow: hidden;
+}
+
+/* No-scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* Score bar glow animation */
+@keyframes barGlow {
+  0%, 100% { filter: brightness(1); }
+  50% { filter: brightness(1.3); }
+}
+.bar-glow { animation: barGlow 2s ease-in-out infinite; }

@@ -1,0 +1,58 @@
+const http = require("http");
+const { Server } = require("socket.io");
+
+const logger = require("./src/utils/logger");
+
+const app = require("./src/app");
+const env = require("./src/config/env");
+const redis = require("./src/config/redis");
+const { connectRedis } = require("./src/config/redis");
+const { connectDB } = require("./src/config/db");
+const { startCleanupService } = require("./src/services/cleanupService");
+const { initSocketService } = require("./src/services/socketService");
+const { socketAuth } = require("./src/middleware/socketAuth");
+
+const server = http.createServer(app);
+
+const io = new Server(server, {
+  cors: {
+    origin: [env.CLIENT_URL],
+    methods: ["GET", "POST", "DELETE"],
+    credentials: true,
+  },
+});
+
+io.use(socketAuth);
+
+// Make Socket.io available to controllers
+app.set("io", io);
+
+// Health check
+app.get("/api/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    service: "HandoffHub E2EE Engine",
+    timestamp: new Date().toISOString(),
+  });
+});
+
+const startServer = async () => {
+  try {
+    await connectDB();
+    await connectRedis();
+
+    initSocketService(io);
+
+    // Remove expired rooms/files every 30 seconds
+    startCleanupService(io, 30000);
+
+    server.listen(env.PORT, () => {
+      logger.info(`HandoffHub Backend Server running on port ${env.PORT}`);
+    });
+  } catch (error) {
+    logger.error("Failed to start server:", error);
+    process.exit(1);
+  }
+};
+
+startServer();
